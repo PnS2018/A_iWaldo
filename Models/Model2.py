@@ -22,9 +22,9 @@ epochs = 50
 steps = 200
 
 directory = os.path.dirname(__file__)
-data_path = os.path.join(directory, './training-data/')
-test_path = os.path.join(directory, './test-data/')
-imlist = os.listdir(data_path)
+train_path = os.path.join(directory, '../training-data/')
+test_path = os.path.join(directory, '../test-data/')
+imlist = os.listdir(train_path)
 imnbr = len(imlist)
 
 # data generator for training set
@@ -35,7 +35,7 @@ test_datagen = ImageDataGenerator(rescale = 1./255)
 
 # generator for reading train data from folder
 train_generator = train_datagen.flow_from_directory(
-    data_path,
+    train_path,
     target_size = (64, 64),
     color_mode = 'grayscale',
     batch_size = batch_size,
@@ -44,13 +44,11 @@ train_generator = train_datagen.flow_from_directory(
 # generator for reading test data from folder
 test_generator = test_datagen.flow_from_directory(
     test_path,
-    target_size = (256, 256),
-    color_mode = 'rgb',
+    target_size = (64, 64),
+    color_mode = 'grayscale',
     batch_size = 1,
     class_mode = 'binary',
     shuffle = False)
-
-
 
 
 
@@ -64,7 +62,7 @@ model.add(Flatten()) #flattens the output of the convolutional layer
 model.add(Dense(500, activation="relu"))
 model.add(Dense(500, activation="relu"))
 model.add(Dense(1, activation="softmax"))
-model.compile(loss=binary_crossentropy, optimizer='rmsprop', metrics=['accuracy'])
+model.compile(loss=binary_crossentropy, optimizer=sgd(learning_rate), metrics=['accuracy'])
 #Create filepath
 filepath = os.path.join(directory,'./Saved_Models/Model1_saved.hdf5')#'/home/federico/Desktop/A_iWaldo/Models/fail.hdf5'
 checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='max')
