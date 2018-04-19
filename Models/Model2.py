@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Conv2D, MaxPooling2D, Flatten
+from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
 from keras.losses import binary_crossentropy
 from keras.optimizers import sgd
 from keras.callbacks import ModelCheckpoint
@@ -13,14 +13,16 @@ kernel_size = (5, 5)
 pool_size = (2, 2)
 learning_rate = 0.01
 batch_size = 32
-epochs = 2
-steps = 2
+epochs = 5
 
+
+#create filename for savings based on the name of the model
+filename = os.path.basename(__file__)
+filename = 'Model'+filename[5]+'_saved.hdf5'
+#create filepaths for traing and testing data
 directory = os.path.dirname(__file__)
 train_path = os.path.join(directory, '../training-data/')
 test_path = os.path.join(directory, '../test-data/')
-imlist = os.listdir(train_path)
-imnbr = len(imlist)
 
 # data generator for training set
 train_datagen = ImageDataGenerator(rescale = 1./255,shear_range = 0.2, zoom_range = 0.2,rotation_range=10)
@@ -60,11 +62,9 @@ model.add(Dense(1, activation="softmax"))
 model.compile(loss=binary_crossentropy, optimizer=sgd(learning_rate), metrics=['accuracy'])
 
 #Create filepath
-filepath = os.path.join(directory,'../Saved_Models/Model1_saved.hdf5')
+filepath = os.path.join(directory,'../Saved_Models/'+filename)
 checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='max')
 callback_list = [checkpoint]
-model.fit_generator(train_generator,
-                    steps_per_epoch = steps,
-                    epochs = epochs,validation_data=test_generator,
-                    callbacks=callback_list
-                    )
+
+#training the model
+model.fit_generator(train_generator,epochs = epochs,validation_data=test_generator,callbacks=callback_list)
