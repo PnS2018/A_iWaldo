@@ -18,8 +18,8 @@ kernel_size = (5, 5)
 pool_size = (2, 2)
 learning_rate = 0.01
 batch_size = 32
-epochs = 50
-steps = 200
+epochs = 2
+steps = 2
 
 directory = os.path.dirname(__file__)
 train_path = os.path.join(directory, '../training-data/')
@@ -64,12 +64,12 @@ model.add(Dense(500, activation="relu"))
 model.add(Dense(1, activation="softmax"))
 model.compile(loss=binary_crossentropy, optimizer=sgd(learning_rate), metrics=['accuracy'])
 #Create filepath
-filepath = os.path.join(directory,'./Saved_Models/Model1_saved.hdf5')#'/home/federico/Desktop/A_iWaldo/Models/fail.hdf5'
+filepath = os.path.join(directory,'../Saved_Models/Model1_saved.hdf5')#'/home/federico/Desktop/A_iWaldo/Models/fail.hdf5'
 checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='max')
 callback_list = [checkpoint]
 model.fit_generator(train_generator,
                     steps_per_epoch = steps,
-                    epochs = 10,
+                    epochs = epochs,validation_data=test_generator,
                     callbacks=callback_list
                     )
 #model.fit(x_train, y_train, batch_size, epochs,verbose=1,validation_data=(x_test,y_test), callbacks=callback_list)
