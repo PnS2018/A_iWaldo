@@ -14,7 +14,7 @@ from PIL import Image
 img_rows, img_cols = 64,64
 img_channels = 1
 directory = os.path.dirname(__file__)
-data_path = os.path.join(directory,'../training-data/')
+data_path = os.path.join(directory,'./training-data/')
 imlist = os.listdir(data_path)
 im1 = (64,64)
 imnbr = len(imlist)

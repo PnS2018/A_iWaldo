@@ -1,6 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Conv2D, MaxPooling2D, Flatten
-from keras.losses import categorical_crossentropy
+from keras.losses import categorical_crossentropy, binary_crossentropy
 from keras.optimizers import sgd
 from keras.callbacks import ModelCheckpoint
 from keras.utils import np_utils
@@ -19,10 +19,11 @@ pool_size = (2, 2)
 learning_rate = 0.01
 batch_size = 32
 epochs = 50
-
+steps = 200
 
 directory = os.path.dirname(__file__)
-data_path = os.path.join(directory,'../training-data/')
+data_path = os.path.join(directory, './training-data/')
+test_path = os.path.join(directory, './test-data/')
 imlist = os.listdir(data_path)
 imnbr = len(imlist)
 
@@ -42,7 +43,7 @@ train_generator = train_datagen.flow_from_directory(
 
 # generator for reading test data from folder
 test_generator = test_datagen.flow_from_directory(
-    'data/test',
+    test_path,
     target_size = (256, 256),
     color_mode = 'rgb',
     batch_size = 1,
@@ -62,16 +63,15 @@ model.add(MaxPooling2D(pool_size, strides=(1,1)))
 model.add(Flatten()) #flattens the output of the convolutional layer
 model.add(Dense(500, activation="relu"))
 model.add(Dense(500, activation="relu"))
-model.add(Dense(2, activation="softmax"))
-model.compile(loss=categorical_crossentropy, optimizer=sgd(lr=0.01), metrics=['accuracy'])
-
+model.add(Dense(1, activation="softmax"))
+model.compile(loss=binary_crossentropy, optimizer='rmsprop', metrics=['accuracy'])
 #Create filepath
-filepath = os.path.join(directory,'../Saved_Models/Model1_saved.hdf5')#'/home/federico/Desktop/A_iWaldo/Models/fail.hdf5'
-checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1,save_best_only=True, mode='max')
+filepath = os.path.join(directory,'./Saved_Models/Model1_saved.hdf5')#'/home/federico/Desktop/A_iWaldo/Models/fail.hdf5'
+checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='max')
 callback_list = [checkpoint]
 model.fit_generator(train_generator,
                     steps_per_epoch = steps,
                     epochs = 10,
-                    validation_data = validation_generator,
-                    validation_steps = num_val_samples/batch_size)
+                    callbacks=callback_list
+                    )
 #model.fit(x_train, y_train, batch_size, epochs,verbose=1,validation_data=(x_test,y_test), callbacks=callback_list)
