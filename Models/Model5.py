@@ -197,11 +197,4 @@ else:
                                   callbacks=callback_list,class_weight=class_weight)
 
 
-updates = 0
-for (x, y) in test_generator:
-    pred = model.predict_on_batch(x)
-    print(pred[0, 0], y[0, 0])
-    updates += 1
-    if updates > 21:
-        break
-print(model.predict_generator(test_generator,verbose=0))
+
