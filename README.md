@@ -20,6 +20,10 @@ In this folder the model will be saved every n epochs. If overfitting would occu
 from beginning, instead we can look at the model from older epochs and find a one where the overfitting hasn't occurred yet.
 Example:a file called Model3_50_saved.hdf5 means that it's the saved model of model3 after 50 epochs.
 
+#### testing:
+
+contains a file for testing the models
+
 #### test-data and training-data:
 
 Both have two subfolders which are named according to the labels.
@@ -34,6 +38,7 @@ training-data/
           notwaldo
           waldo
 ```
+
 ## Dataset
 
 Our dataset is from a github repository,
