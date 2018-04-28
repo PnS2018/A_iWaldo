@@ -107,8 +107,9 @@ class ModelCheckpoint2(keras.callbacks.Callback):
                     self.model.save(filepath, overwrite=True)
 
 #Define Model parameters
-channels = 16
+channels = 32
 stride_1conv=(3,3)#stride for first conv. layer
+stride_2conv=(2,2)#stride for second conv. layer
 kernel_size = (8, 8)
 pool_size = (2, 2)
 learning_rate = 0.01
@@ -182,7 +183,7 @@ else:
     model.add(Conv2D(channels, kernel_size, strides=stride_1conv, activation="relu",
                      input_shape=(64, 64, 1)))  # 1.convolutional layer
     model.add(MaxPooling2D(pool_size, strides=(1, 1)))
-    model.add(Conv2D(channels, kernel_size, strides=(1, 1), activation="relu",
+    model.add(Conv2D(channels, kernel_size, strides=stride_2conv, activation="relu",
                      input_shape=(64, 64, 1)))  # 2. convolutional layer
     model.add(MaxPooling2D(pool_size, strides=(1, 1)))
     model.add(Flatten())  # flattens the output of the convolutional layer
@@ -202,4 +203,3 @@ for (x, y) in test_generator:
     if updates > 21:
         break
 print(model.predict_generator(test_generator,verbose=0))
-
