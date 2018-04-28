@@ -113,8 +113,8 @@ kernel_size = (8, 8)
 pool_size = (2, 2)
 learning_rate = 0.01
 batch_size = 32
-epochs = 10
-period=1  #epoch saving interval
+epochs = 2000
+period=100  #epoch saving interval
 
 #weight the classes
 class_weight={0:1,1:100}
