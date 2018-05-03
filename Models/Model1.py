@@ -1,8 +1,8 @@
 from keras.models import Sequential, load_model
 from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
 from keras.losses import binary_crossentropy
-from keras.optimizers import sgd
-from keras.callbacks import ModelCheckpoint,EarlyStopping,ReduceLROnPlateau
+from keras.optimizers import Adam
+from keras.callbacks import ModelCheckpoint
 import os
 from keras.preprocessing.image import ImageDataGenerator
 import keras
@@ -108,17 +108,16 @@ class ModelCheckpoint2(keras.callbacks.Callback):
 
 
 #Define Model parameters
-channels = 16
-stride_1conv=(3,3)  #stide for first conv. layer
-kernel_size = (8, 8)
+channels = 32
+kernel_size = (5, 5)
 pool_size = (2, 2)
-learning_rate = 0.01
-batch_size = 32
+learning_rate = 0.00001
+batch_size = 16
 epochs = 2000
 period=100  #epoch saving interval
 
 #weight the classes
-class_weight={0:1,1:100}
+class_weight={0:1,1:120}
 
 
 #create filename for savings based on the name of the model
@@ -132,7 +131,7 @@ test_path = os.path.join(directory, '../test-data/')
 
 
 # data generator for training set
-train_datagen = ImageDataGenerator(rescale = 1./255,shear_range = 0.2, zoom_range = 0.2,rotation_range=10)
+train_datagen = ImageDataGenerator(rescale = 1./255,shear_range = 0.2, zoom_range = 0.2,rotation_range=10,horizontal_flip=True)
 
 # data generator for test set
 test_datagen = ImageDataGenerator(rescale = 1./255)
@@ -143,7 +142,7 @@ train_generator = train_datagen.flow_from_directory(
     target_size = (64, 64),
     color_mode = 'grayscale',
     batch_size = batch_size,
-    class_mode = 'categorical',
+    class_mode = 'binary',
     classes=['notwaldo','waldo'])
 
 # generator for reading test data from folder
@@ -152,7 +151,7 @@ test_generator = test_datagen.flow_from_directory(
     target_size = (64, 64),
     color_mode = 'grayscale',
     batch_size = 1,
-    class_mode = 'categorical',
+    class_mode = 'binary',
     shuffle = False,
     classes=['notwaldo','waldo'])
 
@@ -181,17 +180,18 @@ if os.path.exists(filepath):
 else:
     # Define Model
     model = Sequential()
-    model.add(Conv2D(channels, kernel_size, strides=stride_1conv, activation="relu",
-                     input_shape=(64, 64, 1)))  # 1.convolutional layer
-    model.add(MaxPooling2D(pool_size, strides=(1, 1)))
-    model.add(Conv2D(channels, kernel_size, strides=(1, 1), activation="relu",
-                     input_shape=(64, 64, 1)))  # 2. convolutional layer
-    model.add(MaxPooling2D(pool_size, strides=(1, 1)))
+    model.add(Conv2D(16, kernel_size, activation='relu', input_shape=(64, 64, 1)))  # 1.convolutional layer
+    model.add(MaxPooling2D(pool_size))
+    model.add(Conv2D(32, kernel_size, activation='relu'))                           # 2. convolutional layer
+    model.add(MaxPooling2D(pool_size))
+    model.add(Conv2D(32, kernel_size, activation='relu'))  # 2. convolutional layer
+    model.add(MaxPooling2D(pool_size))
     model.add(Flatten())  # flattens the output of the convolutional layer
-    model.add(Dense(10, activation="relu"))
-    model.add(Dense(10, activation="relu"))
-    model.add(Dense(2, activation="softmax"))
-    model.compile(loss=binary_crossentropy, optimizer=sgd(learning_rate), metrics=['accuracy'])
+    model.add(Dense(64, activation='relu'))
+    model.add(Dense(16, activation='relu'))
+    model.add(Dense(1, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer=Adam(), metrics=['accuracy'])
+    model.summary()
     # training the model
     history = model.fit_generator(train_generator, epochs=epochs, validation_data=test_generator,
                                   callbacks=callback_list,class_weight=class_weight)
