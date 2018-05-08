@@ -111,13 +111,10 @@ class ModelCheckpoint2(keras.callbacks.Callback):
 channels = 32
 kernel_size = (5, 5)
 pool_size = (2, 2)
-learning_rate = 0.00001
 batch_size = 16
 epochs = 2000
 period=100  #epoch saving interval
 
-#weight the classes
-class_weight={0:1,1:120}
 
 
 #create filename for savings based on the name of the model
@@ -131,10 +128,10 @@ test_path = os.path.join(directory, '../test-data/')
 
 
 # data generator for training set
-train_datagen = ImageDataGenerator(rescale = 1./255,shear_range = 0.2, zoom_range = 0.2,rotation_range=10,horizontal_flip=True)
+train_datagen = ImageDataGenerator(rescale = 1./255)
 
-# data generator for test set
-test_datagen = ImageDataGenerator(rescale = 1./255)
+# data generator for validation set
+validation_datagen = ImageDataGenerator(rescale = 1./255)
 
 # generator for reading train data from folder
 train_generator = train_datagen.flow_from_directory(
@@ -145,12 +142,12 @@ train_generator = train_datagen.flow_from_directory(
     class_mode = 'binary',
     classes=['notwaldo','waldo'])
 
-# generator for reading test data from folder
-test_generator = test_datagen.flow_from_directory(
+# generator for reading validation data from folder
+validation_generator = validation_datagen.flow_from_directory(
     test_path,
     target_size = (64, 64),
     color_mode = 'grayscale',
-    batch_size = 1,
+    batch_size = batch_size,
     class_mode = 'binary',
     shuffle = False,
     classes=['notwaldo','waldo'])
@@ -163,7 +160,7 @@ filepath2 = os.path.join(directory,'../Saved2_Models/'+filename)
 
 #create a callbacklist with two checkpoints
 #the first checkpoint saves the model if the monitored value improves
-checkpoint1 = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='auto')
+checkpoint1 = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='auto')
 #the second checkpoint saves the model every 100 epochs regardless of the improvment
 checkpoint2 = ModelCheckpoint2(filepath2, verbose=1, save_best_only=False, period=period)
 callback_list = [checkpoint1,checkpoint2]
@@ -173,8 +170,8 @@ if os.path.exists(filepath):
     model=load_model(filepath)
     print('Model loaded')
     # continue training the model
-    history = model.fit_generator(train_generator, epochs=epochs, validation_data=test_generator,
-                                  callbacks=callback_list,class_weight=class_weight)
+    history = model.fit_generator(train_generator, epochs=epochs, validation_data=validation_generator,
+                                  callbacks=callback_list)
 
 #create new model if it doesn't exist yet
 else:
@@ -193,7 +190,7 @@ else:
     model.compile(loss='binary_crossentropy', optimizer=Adam(), metrics=['accuracy'])
     model.summary()
     # training the model
-    history = model.fit_generator(train_generator, epochs=epochs, validation_data=test_generator,
-                                  callbacks=callback_list,class_weight=class_weight)
+    history = model.fit_generator(train_generator, epochs=epochs, validation_data=validation_generator,
+                                  callbacks=callback_list)
 
 
