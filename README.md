@@ -44,3 +44,8 @@ training-data/
 Our dataset is from a github repository,
 which can be found under folowing link:
 https://github.com/vc1492a/Hey-Waldo
+Since this dataset contains very few pictures from Waldo,
+we added own pictures from Waldo and augmented the dataset,
+in order to get a ratio of 1:1 waldo and not waldo pictures.
+The final dataset we are using for training and testing can be found under folowing link:
+https://polybox.ethz.ch/index.php/s/dz9FIzCTanzTETM
