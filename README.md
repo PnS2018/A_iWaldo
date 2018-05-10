@@ -22,7 +22,9 @@ Example:a file called Model3_50_saved.hdf5 means that it's the saved model of mo
 
 #### testing:
 
-contains a file for testing the models
+Each model can be tested separately by using the corresponding file.
+First the two metrics loss and accuracy are evaluated by feeding the model 60 test-images.
+Afterwards 10 randomly choosen images from the testing set are plotted with their ground truth and prediction of the model.
 
 #### test-data and training-data:
 
