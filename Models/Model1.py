@@ -108,10 +108,7 @@ class ModelCheckpoint2(keras.callbacks.Callback):
 
 
 #Define Model parameters
-channels = 32
-kernel_size = (5, 5)
-pool_size = (2, 2)
-batch_size = 16
+batch_size = 32
 epochs = 2000
 period=100  #epoch saving interval
 
@@ -177,20 +174,15 @@ if os.path.exists(filepath):
 else:
     # Define Model
     model = Sequential()
-    model.add(Conv2D(16, kernel_size, activation='relu', input_shape=(64, 64, 1)))  # 1.convolutional layer
-    model.add(MaxPooling2D(pool_size))
-    model.add(Conv2D(32, kernel_size, activation='relu'))                           # 2. convolutional layer
-    model.add(MaxPooling2D(pool_size))
-    model.add(Conv2D(32, kernel_size, activation='relu'))  # 2. convolutional layer
-    model.add(MaxPooling2D(pool_size))
+    model.add(Conv2D(8, kernel_size=(9,9), activation='relu', input_shape=(64, 64, 1)))  # 1.convolutional layer
+    model.add(MaxPooling2D(pool_size=(4,4)))
+    model.add(Conv2D(8, kernel_size=(6,6), activation='relu'))                           # 2. convolutional layer
+    model.add(MaxPooling2D(pool_size=(2,2)))
     model.add(Flatten())  # flattens the output of the convolutional layer
-    model.add(Dense(64, activation='relu'))
-    model.add(Dense(16, activation='relu'))
+    model.add(Dense(50, activation='relu'))
     model.add(Dense(1, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer=Adam(), metrics=['accuracy'])
     model.summary()
     # training the model
     history = model.fit_generator(train_generator, epochs=epochs, validation_data=validation_generator,
                                   callbacks=callback_list)
-
-
