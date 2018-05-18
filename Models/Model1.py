@@ -108,9 +108,9 @@ class ModelCheckpoint2(keras.callbacks.Callback):
 
 
 #Define Model parameters
-batch_size = 32
+batch_size = 16
 epochs = 2000
-period=100  #epoch saving interval
+period=1  #epoch saving interval
 
 
 
