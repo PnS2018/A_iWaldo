@@ -43,21 +43,21 @@ training-data/
 
 ## Dataset
 
-We made a dataset ourselfs, by cutting 18 highresolutional "Where's Waldo" images
+We made a dataset ourselves, by cutting 18 high resolution "Where's Waldo" images
 into small 64x64 versions. This way we generated a dataset with 59051 images. In order to get
-a ratio of nearly 1:1 waldo and not waldo pictures, we cut out Waldo multiple times but always shifted by some pixels.
+a ratio of nearly 1:1 waldo and not waldo pictures, we cut out Waldo multiple times, but always shifted by some pixels.
 The dataset can be found under following link: https://polybox.ethz.ch/index.php/s/fg5y23dTNYxkmvk
 
 ## How to use the final model
 
 For analyzing a picture of your choice, put the picture into the folder final.
 In the folder final there is a file called main.py.
-For analysing an image, main.py has to be called with an argument which contains the name of the picture.
+For analyzing an image, main.py has to be called with an argument which contains the name of the picture.
 Example:
-![Alt text](howto1.png?raw=true "Example1")
+![Alt text](howto1.png?raw=true "Example1")<br />
 After calling main.py a progress bar shows up.
 In addition to that, the user can see how many matches were already found by looking at the number in the brackets at the end of the line.
-![Alt text](howto2.png?raw=true "Example2")
+![Alt text](howto2.png?raw=true "Example2")<br />
 After the search the endresult looks like this:
 ![Alt text](figure1.png?raw=true "Example3")
 The regions where the model thinks Waldo is are in colour, the rest of the image is in grayscale.
