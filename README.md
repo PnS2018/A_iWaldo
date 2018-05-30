@@ -43,11 +43,14 @@ training-data/
 
 ## Dataset
 
-Our dataset is from a github repository,
-which can be found under following link:
-https://github.com/vc1492a/Hey-Waldo
-Since this dataset contains very few pictures of Waldo,
-we added own pictures of Waldo and augmented the dataset,
-in order to get a ratio of 1:1 waldo and not waldo pictures.
-The final dataset we are using for training and testing can be found under following link:
-https://polybox.ethz.ch/index.php/s/dz9FIzCTanzTETM
+We made a dataset ourselfs, by cutting 18 highresolutional "Where's Waldo" images
+into small 64x64 versions. This way we generated a dataset with 59051 images. In order to get
+a ratio of nearly 1:1 waldo and not waldo pictures, we cut out Waldo multiple times but always shifted by some pixels.
+The dataset can be found under following link: https://polybox.ethz.ch/index.php/s/fg5y23dTNYxkmvk
+
+## How to use final model
+
+For analyzing a picture of your choice, put the picture into the folder final.
+In the folder final there is a file called main.py.
+For analysing an image main.py has to be called with an argument which contains the name of the picture.
+![Alt text](howto1.png?raw=true "Example")
