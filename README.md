@@ -55,7 +55,7 @@ In the folder final there is a file called main.py.
 For analyzing an image, main.py has to be called with an argument which contains the name of the picture.
 Example:
 ![Alt text](howto1.png?raw=true "Example1")<br />
-After calling main.py a progress bar shows up.
+After calling main.py a progress bar shows up.(we use the code from following github repository: https://gist.github.com/vladignatyev/06860ec2040cb497f0f3)
 In addition to that, the user can see how many matches were already found by looking at the number in the brackets at the end of the line.
 ![Alt text](howto2.png?raw=true "Example2")<br />
 After the search the endresult looks like this:
