@@ -60,5 +60,5 @@ In addition to that, the user can see how many matches were already found by loo
 ![Alt text](howto2.png?raw=true "Example2")<br />
 After the search the endresult looks like this:
 ![Alt text](figure1.png?raw=true "Example3")
-The regions where the model thinks Waldo is are in colour, the rest of the image is in grayscale.
+The regions where the model thinks Waldo is, are in colour, the rest of the image is in grayscale.
 For getting a good result the "Where's Waldo" image should have a resolution of at least 2500x1600 pixels.
