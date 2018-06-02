@@ -50,7 +50,7 @@ The dataset can be found under following link: https://polybox.ethz.ch/index.php
 
 ## How to use the final model
 
-For analyzing a picture of your choice, put the picture into the folder final.
+For analyzing a picture of your choice, put the picture into the folder final (there are already 7 example pictures in the folder, which can be tested).
 In the folder final there is a file called main.py.
 For analyzing an image, main.py has to be called with an argument which contains the name of the picture.
 Example:
